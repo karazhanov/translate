@@ -1,0 +1,28 @@
+linters:
+  enable-all: true
+  disable:
+    - wsl
+    - forbidigo
+    - nlreturn
+    - paralleltest
+    - gofumpt
+    - varnamelen
+    - exhaustive
+    - stylecheck
+    - interfacer
+    - golint
+    - maligned
+    - scopelint
+    - sqlclosecheck
+    - rowserrcheck
+    - staticcheck
+    - wastedassign
+    - unused
+    - tparallel
+    - bodyclose
+    - contextcheck
+    - gosimple
+    - nilerr
+    - noctx
+    - structcheck
+    - unparam

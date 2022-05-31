@@ -16,6 +16,10 @@ func New(
 	}
 }
 
+func (t *Translator) TranslateMnemo(lang string, mnemo string) string {
+	return t.translator.Translate(lang, mnemo)
+}
+
 func (t *Translator) Translate(lang string, translate any) {
 	value := reflect.ValueOf(translate)
 	if value.Kind() == reflect.Ptr {
@@ -47,7 +51,7 @@ func (t *Translator) translate(lang string, val reflect.Value) {
 			if tag, find := val.Type().Field(i).Tag.Lookup(t.tagname); find {
 				translatedField := val.FieldByName(tag)
 				if translatedField != (reflect.Value{}) {
-					translatedField.SetString(t.translator.Translate(lang, field.String()))
+					translatedField.SetString(t.TranslateMnemo(lang, field.String()))
 				}
 			}
 		}

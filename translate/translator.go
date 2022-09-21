@@ -25,6 +25,9 @@ func (t *Translator) Translate(lang string, translate any) {
 	if value.Kind() == reflect.Ptr {
 		value = value.Elem()
 	}
+	if !isAcceptTypeForTranslate(value) {
+		return
+	}
 	if value.Kind() == reflect.Slice {
 		for i := 0; i < value.Len(); i++ {
 			t.translate(lang, value.Index(i))
@@ -38,12 +41,15 @@ func (t *Translator) translate(lang string, val reflect.Value) {
 	if val.Kind() == reflect.Ptr {
 		val = val.Elem()
 	}
+	if !isAcceptTypeForTranslate(val) {
+		return
+	}
 	for i := 0; i < val.NumField(); i++ {
 		field := val.Field(i)
 		switch field.Kind() {
 		case reflect.Struct:
 			t.translate(lang, field)
-		case reflect.Slice:
+		case reflect.Array, reflect.Slice:
 			for j := 0; j < field.Len(); j++ {
 				t.translate(lang, field.Index(j))
 			}
@@ -56,4 +62,12 @@ func (t *Translator) translate(lang string, val reflect.Value) {
 			}
 		}
 	}
+}
+
+func isAcceptTypeForTranslate(val reflect.Value) bool {
+	switch val.Kind() {
+	case reflect.Array, reflect.Slice, reflect.Struct:
+		return true
+	}
+	return false
 }
